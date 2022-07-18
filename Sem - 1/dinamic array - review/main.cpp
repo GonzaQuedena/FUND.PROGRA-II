@@ -75,6 +75,20 @@ int* erase(int pos, int* size, int* arr) {
 	return aux;
 }
 
+int* sort_arr(int* size, int* arr) {
+	int aux = 0;
+	for (int i = 0; i < *size; ++i) {
+		for (int j = 0; j < *size - 1; ++j) {
+			if (arr[j] > arr[j + 1]) {
+				aux = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = aux;
+			}
+		}
+	}
+	return arr;
+}
+
 bool empty(int* arr) {
 	if (arr == nullptr) {
 		return true;
@@ -91,14 +105,17 @@ void main() {
 	*size = 0;
 
 	/*Agregando datos al arreglo en última posición*/
-	arr = push_back(3, size, arr);
-	arr = push_back(5, size, arr);
+	arr = push_back(4, size, arr);
+	arr = push_back(2, size, arr);
 	/*Agregando datos al arreglo en primera posición*/
-	arr = push_front(2, size, arr);
 	arr = push_front(1, size, arr);
-	arr = push_front(0, size, arr);
+	arr = push_front(5, size, arr);
+	arr = push_front(6, size, arr);
 	/*Agregando datos al arreglo en una posición específica*/
-	arr = insert(4, 4, size, arr);
+	arr = insert(-2, 4, size, arr);
+
+	/*Ordenando datos del arreglo*/
+	arr = sort_arr(size, arr);
 
 	/*Eliminando datos del arreglo en última posición*/
 	//arr = pop_back(size, arr);
@@ -107,7 +124,7 @@ void main() {
 	//arr = pop_front(size, arr);
 	//arr = pop_front(size, arr);
 	/*Eliminando datos del arreglo en una posición específica*/
-	arr = erase(4, size, arr);
+	//arr = erase(4, size, arr);
 
 	if (empty(arr)) {
 		std::cout << "\nArreglo vacio";
