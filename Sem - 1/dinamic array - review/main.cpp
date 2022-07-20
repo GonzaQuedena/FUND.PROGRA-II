@@ -1,92 +1,147 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 
-int* push_back(int v, int* size, int* arr) {
-	int* aux = new int[*size + 1];
-	for (int i = 0; i < *size; ++i) {
+/*
+push_back(): agregar dato al final del arreglo.
+push_front(): agregar dato al inicio del arreglo.
+insert(): agregar dato en una pos. específica del arreglo.
+
+pop_back(): eliminar dato al final del arreglo.
+pop_front(): eliminar dato al inicio del arreglo.
+erase(): eliminar dato en una pos. específica del arreglo.
+
+sort(): ordenamiento.
+*/
+
+int* push_back(int v, int& size, int* arr) {
+	int* aux = new int[size + 1];
+	for (int i = 0; i < size; ++i) {
 		aux[i] = arr[i];
 	}
-	aux[*size] = v;
-	*size += 1;
-	return aux;
+	aux[size] = v;
+
+	size += 1;
+	if (arr != nullptr)delete arr;
+
+	arr = aux;
+	return arr;
 }
-int* push_front(int v, int* size, int* arr) {
-	int* aux = new int[*size + 1];
-	for (int i = 0; i < *size; ++i) {
+
+int* push_front(int v, int& size, int* arr) {
+	int* aux = new int[size + 1];
+	for (int i = 0; i < size; ++i) {
 		aux[i + 1] = arr[i];
 	}
 	aux[0] = v;
-	*size += 1;
-	return aux;
+
+	size += 1;
+	if (arr != nullptr)delete arr;
+
+	arr = aux;
+	return arr;
 }
-int* insert(int v, int pos, int* size, int* arr) {
+
+int* insert(int v, int pos, int& size, int* arr) {
 
 	if (pos == 0) {
 		return push_front(v, size, arr);
 	}
 
-	int* aux = new int[*size + 1];
+	int* aux = new int[size + 1];
 	for (int i = 0; i < pos; ++i) {
 		aux[i] = arr[i];
 	}
-	for (int i = pos; i < *size; ++i) {
+	for (int i = pos; i < size; ++i) {
 		aux[i + 1] = arr[i];
 	}
 	aux[pos] = v;
-	*size += 1;
-	return aux;
+
+	size += 1;
+	if (arr != nullptr)delete arr;
+
+	arr = aux;
+	return arr;
 }
 
-int* pop_back(int* size, int* arr) {
-	int* aux = new int[*size - 1];
-	for (int i = 0; i < *size - 1; ++i) {
+int* pop_back(int& size, int* arr) {
+	int* aux = new int[size - 1];
+	for (int i = 0; i < size - 1; ++i) {
 		aux[i] = arr[i];
 	}
-	*size -= 1;
-	if (*size == 0) {
-		return nullptr;
+	size -= 1;
+	if (arr != nullptr)delete arr;
+
+	if (size == 0) {
+		arr = nullptr;
 	}
-	return aux;
+	arr = aux;
+	return arr;
 }
 
-int* pop_front(int* size, int* arr) {
-	int* aux = new int[*size - 1];
-	for (int i = 0; i < *size; ++i) {
+int* pop_front(int& size, int* arr) {
+	int* aux = new int[size - 1];
+	for (int i = 0; i < size; ++i) {
 		aux[i] = arr[i + 1];
 	}
-	*size -= 1;
-	if (*size == 0) {
-		return nullptr;
+	size -= 1;
+	if (arr != nullptr)delete arr;
+
+	if (size == 0) {
+		arr = nullptr;
+		return arr;
 	}
-	return aux;
+	arr = aux;
+	return arr;
 }
 
-int* erase(int pos, int* size, int* arr) {
-	int* aux = new int[*size - 1];
+int* erase(int pos, int& size, int* arr) {
+
+	if (pos == 0) {
+		return pop_front(size, arr);
+	}
+	if (pos == size - 1) {
+		return pop_back(size, arr);
+	}
+
+	int* aux = new int[size - 1];
 	for (int i = 0; i < pos; ++i) {
 		aux[i] = arr[i];
 	}
-	for (int i = pos; i < *size; ++i) {
+	for (int i = pos; i < size; ++i) {
 		aux[i] = arr[i + 1];
 	}
-	*size -= 1;
-	if (*size == 0) {
-		return nullptr;
+	size -= 1;
+	if (arr != nullptr)delete arr;
+
+	if (size == 0) {
+		arr = nullptr;
+		return arr;
 	}
-	return aux;
+	arr = aux;
+	return arr;
 }
 
-int* sort_arr(int* size, int* arr) {
-	int aux = 0;
-	for (int i = 0; i < *size; ++i) {
-		for (int j = 0; j < *size - 1; ++j) {
+void swap(int* n1, int* n2) {
+	int aux = *n1;
+	*n1 = *n2;
+	*n2 = aux;
+}
+
+void sort(int& size, int*& arr) {
+	for (int i = 0; i < size - 1; i++) {
+		for (int j = 0; j < size - i - 1; j++) {
 			if (arr[j] > arr[j + 1]) {
-				aux = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = aux;
+				swap(&arr[j], &arr[j + 1]);
 			}
 		}
 	}
-	return arr;
+}
+
+void print_array(int& size, int*& arr) {
+	for (int i = 0; i < size; ++i) {
+		std::cout << arr[i] << " ";
+	}
 }
 
 bool empty(int* arr) {
@@ -99,10 +154,8 @@ bool empty(int* arr) {
 void main() {
 	/*Inicializando arreglo en nullptr*/
 	int* arr = nullptr;
-	/*Asignando memoria a la variale size*/
-	int* size = new int;
-	/*Dándole valor a ese slot de memoria reservada*/
-	*size = 0;
+	/*Asignando a la variale size=0*/
+	int size = 0;
 
 	/*Agregando datos al arreglo en última posición*/
 	arr = push_back(4, size, arr);
@@ -115,7 +168,7 @@ void main() {
 	arr = insert(-2, 4, size, arr);
 
 	/*Ordenando datos del arreglo*/
-	arr = sort_arr(size, arr);
+	sort(size, arr);
 
 	/*Eliminando datos del arreglo en última posición*/
 	//arr = pop_back(size, arr);
@@ -123,17 +176,17 @@ void main() {
 	/*Eliminando datos del arreglo en primera posición*/
 	//arr = pop_front(size, arr);
 	//arr = pop_front(size, arr);
+	//arr = pop_front(size, arr);
 	/*Eliminando datos del arreglo en una posición específica*/
-	//arr = erase(4, size, arr);
+	//arr = erase(1, size, arr);
 
 	if (empty(arr)) {
-		std::cout << "\nArreglo vacio";
+		std::cout << "\n\tArreglo vacio\n";
 		return;
 	}
 
-	for (int i = 0; i < *size; ++i) {
-		std::cout << arr[i] << " ";
-	}
+	/*Imprimiendo arreglo*/
+	print_array(size, arr);
 
 
 	std::cin.get();
