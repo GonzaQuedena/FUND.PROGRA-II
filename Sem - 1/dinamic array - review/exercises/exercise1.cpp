@@ -70,26 +70,28 @@ void ordenar(int& size, int* arr) {
 void main() {
 
 	srand(time(nullptr));
-	int size = 10;
-	int* arr = new int[size];
+	int* size = new int;
+	*size = 10;
+	int* arr = new int[*size];
 
-	arr = generar_arreglo(size, arr);
+	arr = generar_arreglo(*size, arr);
 
-	imprimir_arreglo(size, arr);
-
-	std::cout << "\n-----" << std::endl;
-
-	encontrar_mayor(size, arr);
+	imprimir_arreglo(*size, arr);
 
 	std::cout << "\n-----" << std::endl;
 
-	encontrar_menor(size, arr);
+	encontrar_mayor(*size, arr);
 
 	std::cout << "\n-----" << std::endl;
 
-	ordenar(size, arr);
+	encontrar_menor(*size, arr);
 
-	delete arr;
+	std::cout << "\n-----" << std::endl;
+
+	ordenar(*size, arr);
+
+	delete[] arr;
+	delete size;
 
 	std::cin.get();
 }
