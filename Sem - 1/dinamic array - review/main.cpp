@@ -6,11 +6,9 @@
 push_back(): agregar dato al final del arreglo.
 push_front(): agregar dato al inicio del arreglo.
 insert(): agregar dato en una pos. específica del arreglo.
-
 pop_back(): eliminar dato al final del arreglo.
 pop_front(): eliminar dato al inicio del arreglo.
 erase(): eliminar dato en una pos. específica del arreglo.
-
 sort(): ordenamiento.
 */
 
